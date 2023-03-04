@@ -18,7 +18,7 @@ class AccountHolder(SqlConnect):
         self.Pin = pin
         self.ZipCode = zip_code
 
-    def read_query(self, row: Row):
+    def read_query(self, row: Row) -> list():
         data = []
         for r in row:
             account_holder = AccountHolder(r[0], r[1], r[2], r[3], r[4])
