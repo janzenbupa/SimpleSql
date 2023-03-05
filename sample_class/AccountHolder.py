@@ -1,4 +1,4 @@
-from SqlConnect import SqlConnect
+from sql_connect import SqlConnect
 from pyodbc import Row
 
 
