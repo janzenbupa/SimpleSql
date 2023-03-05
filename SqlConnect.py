@@ -1,4 +1,5 @@
 import pyodbc
+import abc
 
 
 
@@ -9,14 +10,16 @@ class SqlConnect(object):
     server: str = None
     database: str = None
 
+    __metaclass__ = abc.ABCMeta
+
     def __init__(self, server: str, database: str):
         self.connection = None
         self.server = server
         self.database = database
 
-    def connect(self):
+    def connect(self, server: str = None, database: str = None):
         # ENCRYPT defaults to yes starting in ODBC Driver 18. It's good to always specify ENCRYPT=yes on the client side to avoid MITM attacks.
-        self.connection = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER='+self.server+';DATABASE='+self.database+';Trusted_Connection=yes;')
+        self.connection = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER='+server+';DATABASE='+database+';Trusted_Connection=yes;')
         self.cursor = self.connection.cursor()
         
 
@@ -27,14 +30,9 @@ class SqlConnect(object):
         return row
         
 
-    def __read_row(self):
-        row = self.cursor.fetchone()
-        data = row
-
-        while row:
-            row = self.cursor.fetchone()
-            data += row
-        return data
+    @abc.abstractmethod
+    def read_query(self):
+        return
 
 
     def execute_command(self, stored_procedure: str, parameters):

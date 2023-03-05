@@ -1,5 +1,6 @@
-from SqlConnect import SqlConnect
+from sql_connect import SqlConnect
 from pyodbc import Row
+from typing import List
 
 
 
@@ -18,7 +19,7 @@ class AccountHolder(SqlConnect):
         self.Pin = pin
         self.ZipCode = zip_code
 
-    def read_query(self, row: Row):
+    def read_query(self, row: Row) -> list():
         data = []
         for r in row:
             account_holder = AccountHolder(r[0], r[1], r[2], r[3], r[4])
@@ -28,3 +29,8 @@ class AccountHolder(SqlConnect):
         
     def connect(self, server: str, database: str):
         super().connect(server, database)
+
+    def execute_command(self, stored_procedure: str, parameters: List[str]):
+        row = super().execute_command(stored_procedure, parameters)
+        for i in row:
+            return i[0]
