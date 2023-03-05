@@ -1,5 +1,6 @@
 from sql_connect import SqlConnect
 from pyodbc import Row
+from typing import List
 
 
 
@@ -28,3 +29,8 @@ class AccountHolder(SqlConnect):
         
     def connect(self, server: str, database: str):
         super().connect(server, database)
+
+    def execute_command(self, stored_procedure: str, parameters: List[str]):
+        row = super().execute_command(stored_procedure, parameters)
+        for i in row:
+            return i[0]
